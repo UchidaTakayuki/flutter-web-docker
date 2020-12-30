@@ -1,0 +1,30 @@
+version: '3'
+services:
+  flutter-web:
+    container_name: "flutter-web-${APPLICATION_NAME}"
+    build: ./flutter
+    image: flutter-web:1.0
+    tty: true
+    environment:
+      APPLICATION_NAME: ${APPLICATION_NAME}
+      FLUTTER_WEB_VOLUME: ${FLUTTER_WEB_VOLUME}
+      FLUTTER_WEB_GIT_REPOSITORY: ${FLUTTER_WEB_GIT_REPOSITORY}
+      TZ: ${TZ}
+      LANG: ${LANG}
+    volumes:
+      - "./src:${FLUTTER_WEB_VOLUME}"
+    depends_on:
+      - flutter-nginx
+  flutter-nginx:
+    container_name: "flutter-nginx-${APPLICATION_NAME}"
+    build: ./nginx
+    image: flutter-nginx:1.19.6-alpine
+    ports:
+      - 80:80
+    environment:
+      APPLICATION_NAME: ${APPLICATION_NAME}
+      FLUTTER_NGINX_SERVER_NAME: ${FLUTTER_NGINX_SERVER_NAME}
+      TZ: ${TZ}
+      LANG: ${LANG}
+    volumes:
+      - "./src/${APPLICATION_NAME}/build/web:/var/www/html"

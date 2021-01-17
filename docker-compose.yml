@@ -4,6 +4,8 @@ services:
     container_name: "flutter-web-${APPLICATION_NAME}"
     build: ./flutter
     image: flutter-web:1.0
+    ports:
+      - 9005:9005
     tty: true
     environment:
       APPLICATION_NAME: ${APPLICATION_NAME}
